@@ -1,0 +1,12 @@
+{
+  "name": "atividade-pratica-01",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.16.3"
+  }
+}
