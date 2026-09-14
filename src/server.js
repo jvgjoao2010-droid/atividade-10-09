@@ -1,22 +1,12 @@
-import pool from "./db.js";
+import express from "express";
+import equipamentosRoutes from "./routes/equipamentos.routes.js";
 
-async function testarConexao() {
-    try {
-        const resultado = await pool.query(
-            "SELECT * FROM equipamentos"
-        );
+const app = express();
 
-        console.log("Conexão realizada com sucesso!");
+app.use(express.json());
 
-        console.log("Equipamentos encontrados:");
+app.use(equipamentosRoutes);
 
-        console.table(resultado.rows);
-
-    } catch (erro) {
-        console.error("Erro ao conectar ao banco:", erro);
-    } finally {
-        await pool.end();
-    }
-}
-
-testarConexao();
+app.listen(3000, () => {
+    console.log("Servidor rodando na porta 3000");
+});
