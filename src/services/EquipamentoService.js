@@ -1,10 +1,11 @@
 import pool from "../db.js";
 
 class EquipamentoService {
-
     async listarTodos() {
         const resultado = await pool.query(
-            "SELECT * FROM equipamentos ORDER BY id_equipamento"
+            `SELECT id, equipamentos, categoria, condicao, disponivel
+             FROM equipamentos
+             ORDER BY id`
         );
 
         return resultado.rows;
@@ -12,20 +13,21 @@ class EquipamentoService {
 
     async buscarPorId(id) {
         const resultado = await pool.query(
-            "SELECT * FROM equipamentos WHERE id_equipamento = $1",
+            `SELECT id, equipamentos, categoria, condicao, disponivel
+             FROM equipamentos
+             WHERE id = $1`,
             [id]
         );
 
-        return resultado.rows[0] || null;
+        return resultado.rows[0] ?? null;
     }
 
-    async cadastrar(nome, descricao, disponivel = true) {
+    async cadastrar({ equipamentos, categoria, condicao, disponivel = true }) {
         const resultado = await pool.query(
-            `INSERT INTO equipamentos
-                (nome, descricao, disponivel)
-             VALUES ($1, $2, $3)
-             RETURNING *`,
-            [nome, descricao, disponivel]
+            `INSERT INTO equipamentos (equipamentos, categoria, condicao, disponivel)
+             VALUES ($1, $2, $3, $4)
+             RETURNING id, equipamentos, categoria, condicao, disponivel`,
+            [equipamentos, categoria, condicao, disponivel]
         );
 
         return resultado.rows[0];
@@ -35,12 +37,12 @@ class EquipamentoService {
         const resultado = await pool.query(
             `UPDATE equipamentos
              SET disponivel = $1
-             WHERE id_equipamento = $2
-             RETURNING *`,
+             WHERE id = $2
+             RETURNING id, equipamentos, categoria, condicao, disponivel`,
             [disponivel, id]
         );
 
-        return resultado.rows[0] || null;
+        return resultado.rows[0] ?? null;
     }
 }
 

@@ -5,7 +5,7 @@ const { Pool } = pg;
 
 const pool = new Pool({
     user: process.env.PGUSER,
-    host: process.env.PGHOST,
+    host: process.env.PGHOST ?? process.env.PQHOST,
     database: process.env.PGDATABASE,
     password: process.env.PGPASSWORD,
     port: process.env.PGPORT,
